@@ -123,6 +123,7 @@ func execSQL(dbConn *sql.DB, query string, entityName string) {
 	_, err := dbConn.Exec(query)
 	if err != nil {
 		panic(err)
+		return
 	}
 
 	fmt.Println(entityName + " Migrated")
