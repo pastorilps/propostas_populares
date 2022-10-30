@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: .dockerfile
+    image: github.com/pastorilps/propostas_populares-db
+    container_name: propostas_populares-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: propostas_populares
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      PGDATA: /var/lib/postgresql/data/propostas_populares
+    volumes:
+      - propostas_populares:/var/lib/postgresql/data
+
+volumes:
+  propostas_populares:
