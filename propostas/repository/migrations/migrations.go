@@ -3,6 +3,7 @@ package migration
 import (
 	"database/sql"
 	"fmt"
+	"log"
 )
 
 func CreateAttatchments(dbConn *sql.DB) {
@@ -11,7 +12,6 @@ func CreateAttatchments(dbConn *sql.DB) {
 		url varchar NOT NULL,
 		user_id int8 NOT NULL
 	);`, "Attatchments")
-	return
 }
 
 func CreateMedia(dbConn *sql.DB) {
@@ -21,7 +21,6 @@ func CreateMedia(dbConn *sql.DB) {
 		user_id int8 NOT NULL,
 		CONSTRAINT media_id PRIMARY KEY (id)
 	);`, "Media")
-	return
 
 }
 
@@ -31,7 +30,6 @@ func CreateParllament(dbConn *sql.DB) {
 		email varchar(50) NOT NULL,
 		template_name int8 NOT NULL
 	);`, "Parllament")
-	return
 }
 
 func CreateProposal(dbConn *sql.DB) {
@@ -45,7 +43,6 @@ func CreateProposal(dbConn *sql.DB) {
 		user_id int8 NOT NULL,
 		CONSTRAINT proposal_id PRIMARY KEY (id)
 	);`, "Proposal")
-	return
 }
 
 func CreateUser(dbConn *sql.DB) {
@@ -58,7 +55,6 @@ func CreateUser(dbConn *sql.DB) {
 		newsletter bool NOT NULL,
 		CONSTRAINT user_id PRIMARY KEY (id)
 	);`, "User")
-	return
 }
 
 func AlterAttatchments(dbConn *sql.DB) {
@@ -72,7 +68,6 @@ func AlterAttatchments(dbConn *sql.DB) {
 	END;
 	
   END $$;`, "Alter Attatchments")
-	return
 }
 
 func AlterMedia(dbConn *sql.DB) {
@@ -86,7 +81,6 @@ func AlterMedia(dbConn *sql.DB) {
 	END;
 	
   END $$;`, "Alter Media")
-	return
 }
 
 func AlterProposal(dbConn *sql.DB) {
@@ -102,7 +96,6 @@ func AlterProposal(dbConn *sql.DB) {
 	END;
 	
   END $$;`, "Alter Proposal")
-	return
 }
 
 func AlterUser(dbConn *sql.DB) {
@@ -116,18 +109,15 @@ func AlterUser(dbConn *sql.DB) {
 		END;
 		
 	END $$;`, "Alter User")
-	return
 }
 
 func execSQL(dbConn *sql.DB, query string, entityName string) {
 	_, err := dbConn.Exec(query)
 	if err != nil {
-		panic(err)
-		return
+		log.Fatalln(err)
 	}
 
 	fmt.Println(entityName + " Migrated")
-	return
 }
 
 func Exec(Conn *sql.DB) {
