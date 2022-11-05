@@ -1,0 +1,61 @@
+basePath: /
+definitions:
+  main.UserData:
+    properties:
+      email:
+        example: test@test.com
+        type: string
+      name:
+        example: Name
+        type: string
+      newsletter:
+        example: true
+        type: boolean
+      password:
+        example: aB@1245
+        type: string
+      picture:
+        example: 1
+        type: integer
+    required:
+    - email
+    - name
+    - newsletter
+    - password
+    - picture
+    type: object
+host: localhost:7500
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Echo Propostas Populares API
+  version: "1.0"
+paths:
+  /user/create:
+    post:
+      consumes:
+      - application/json
+      description: creates users.
+      parameters:
+      - description: The body to create a thing
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/main.UserData'
+      responses:
+        "200":
+          description: OK
+      summary: Creates a user.
+      tags:
+      - user
+schemes:
+- http
+swagger: "2.0"

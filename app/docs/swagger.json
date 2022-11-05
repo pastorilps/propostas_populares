@@ -1,0 +1,87 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server server.",
+        "title": "Echo Propostas Populares API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:7500",
+    "basePath": "/",
+    "paths": {
+        "/user/create": {
+            "post": {
+                "description": "creates users.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Creates a user.",
+                "parameters": [
+                    {
+                        "description": "The body to create a thing",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.UserData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.UserData": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "newsletter",
+                "password",
+                "picture"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "test@test.com"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Name"
+                },
+                "newsletter": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "password": {
+                    "type": "string",
+                    "example": "aB@1245"
+                },
+                "picture": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        }
+    }
+}

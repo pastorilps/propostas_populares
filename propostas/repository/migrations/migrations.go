@@ -126,8 +126,8 @@ func Exec(Conn *sql.DB) {
 	CreateMedia(Conn)
 	CreateParllament(Conn)
 	CreateProposal(Conn)
-	AlterUser(Conn)
-	AlterAttatchments(Conn)
-	AlterMedia(Conn)
-	AlterProposal(Conn)
+	// AlterUser(Conn)
+	// AlterAttatchments(Conn)
+	// AlterMedia(Conn)
+	// AlterProposal(Conn)
 }
