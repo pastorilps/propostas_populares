@@ -1,4 +1,4 @@
-package migration
+package migrations
 
 import (
 	"database/sql"
@@ -75,7 +75,7 @@ func AlterMedia(dbConn *sql.DB) {
 	BEGIN
 	
 	BEGIN
-		ALTER TABLE public.attatchments ADD CONSTRAINT media_fk FOREIGN KEY (user_id) REFERENCES public."user"(id);
+		ALTER TABLE public.media ADD CONSTRAINT media_fk FOREIGN KEY (user_id) REFERENCES public."user"(id);
 	EXCEPTION
 		WHEN duplicate_object THEN RAISE NOTICE 'Table constraint already exists';
 	END;
@@ -98,19 +98,6 @@ func AlterProposal(dbConn *sql.DB) {
   END $$;`, "Alter Proposal")
 }
 
-func AlterUser(dbConn *sql.DB) {
-	execSQL(dbConn, `DO $$
-		BEGIN
-		
-		BEGIN
-			ALTER TABLE public."user" ADD CONSTRAINT user_fk FOREIGN KEY (picture) REFERENCES public.media(id);
-		EXCEPTION
-			WHEN duplicate_object THEN RAISE NOTICE 'Table constraint already exists';
-		END;
-		
-	END $$;`, "Alter User")
-}
-
 func execSQL(dbConn *sql.DB, query string, entityName string) {
 	_, err := dbConn.Exec(query)
 	if err != nil {
@@ -126,8 +113,7 @@ func Exec(Conn *sql.DB) {
 	CreateMedia(Conn)
 	CreateParllament(Conn)
 	CreateProposal(Conn)
-	// AlterUser(Conn)
-	// AlterAttatchments(Conn)
-	// AlterMedia(Conn)
-	// AlterProposal(Conn)
+	AlterAttatchments(Conn)
+	AlterMedia(Conn)
+	AlterProposal(Conn)
 }

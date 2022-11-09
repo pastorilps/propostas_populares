@@ -4,7 +4,7 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample server server.",
+        "description": "This is a sample crud api.",
         "title": "Echo Propostas Populares API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
@@ -21,37 +21,168 @@
     "host": "localhost:7500",
     "basePath": "/",
     "paths": {
-        "/user/create": {
-            "post": {
-                "description": "creates users.",
+        "/v1/users": {
+            "get": {
+                "description": "Get all users list.",
                 "consumes": [
+                    "*/*"
+                ],
+                "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "Users"
                 ],
-                "summary": "Creates a user.",
+                "summary": "Show all users.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/create": {
+            "post": {
+                "description": "Create User.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create User.",
                 "parameters": [
                     {
-                        "description": "The body to create a thing",
+                        "description": "The body to create a user",
                         "name": "Body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.UserData"
+                            "$ref": "#/definitions/entity.Send_User"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Users"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/delete/{id}": {
+            "delete": {
+                "description": "Delete User Data.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete User.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário deletado com sucesso!"
+                    }
+                }
+            }
+        },
+        "/v1/users/update/{id}": {
+            "put": {
+                "description": "Update User Data.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update User.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "The body to update a user",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Send_User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Send_User"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/{id}": {
+            "get": {
+                "description": "Get user.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Show an user.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Users"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
-        "main.UserData": {
+        "entity.Send_User": {
             "type": "object",
             "required": [
                 "email",
@@ -65,9 +196,12 @@
                     "type": "string",
                     "example": "test@test.com"
                 },
+                "id": {
+                    "type": "integer"
+                },
                 "name": {
                     "type": "string",
-                    "example": "Name"
+                    "example": "User Name"
                 },
                 "newsletter": {
                     "type": "boolean",
@@ -75,7 +209,36 @@
                 },
                 "password": {
                     "type": "string",
-                    "example": "aB@1245"
+                    "example": "aB@123456"
+                },
+                "picture": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "entity.Users": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "test@test.com"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "User Name"
+                },
+                "newsletter": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "password": {
+                    "type": "string",
+                    "example": "b3f8b6283fce62d85c5b6334c8ee9a611aed144c3d93d11ef2759f6baabdc3b0"
                 },
                 "picture": {
                     "type": "integer",

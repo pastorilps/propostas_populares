@@ -1,18 +1,20 @@
 basePath: /
 definitions:
-  main.UserData:
+  entity.Send_User:
     properties:
       email:
         example: test@test.com
         type: string
+      id:
+        type: integer
       name:
-        example: Name
+        example: User Name
         type: string
       newsletter:
         example: true
         type: boolean
       password:
-        example: aB@1245
+        example: aB@123456
         type: string
       picture:
         example: 1
@@ -24,13 +26,34 @@ definitions:
     - password
     - picture
     type: object
+  entity.Users:
+    properties:
+      email:
+        example: test@test.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: User Name
+        type: string
+      newsletter:
+        example: true
+        type: boolean
+      password:
+        example: b3f8b6283fce62d85c5b6334c8ee9a611aed144c3d93d11ef2759f6baabdc3b0
+        type: string
+      picture:
+        example: 1
+        type: integer
+    type: object
 host: localhost:7500
 info:
   contact:
     email: support@swagger.io
     name: API Support
     url: http://www.swagger.io/support
-  description: This is a sample server server.
+  description: This is a sample crud api.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -38,24 +61,110 @@ info:
   title: Echo Propostas Populares API
   version: "1.0"
 paths:
-  /user/create:
+  /v1/users:
+    get:
+      consumes:
+      - '*/*'
+      description: Get all users list.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Users'
+      summary: Show all users.
+      tags:
+      - Users
+  /v1/users/{id}:
+    get:
+      consumes:
+      - '*/*'
+      description: Get user.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Users'
+      summary: Show an user.
+      tags:
+      - Users
+  /v1/users/create:
     post:
       consumes:
       - application/json
-      description: creates users.
+      description: Create User.
       parameters:
-      - description: The body to create a thing
+      - description: The body to create a user
         in: body
         name: Body
         required: true
         schema:
-          $ref: '#/definitions/main.UserData'
+          $ref: '#/definitions/entity.Send_User'
+      produces:
+      - application/json
       responses:
         "200":
           description: OK
-      summary: Creates a user.
+          schema:
+            $ref: '#/definitions/entity.Users'
+      summary: Create User.
       tags:
-      - user
+      - Users
+  /v1/users/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete User Data.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Usuário deletado com sucesso!
+      summary: Delete User.
+      tags:
+      - Users
+  /v1/users/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update User Data.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: The body to update a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Send_User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Send_User'
+      summary: Update User.
+      tags:
+      - Users
 schemes:
 - http
 swagger: "2.0"
