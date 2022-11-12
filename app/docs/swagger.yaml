@@ -1,5 +1,22 @@
 basePath: /
 definitions:
+  entity.Auth_Token:
+    properties:
+      expires:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.Receive_Login_Data:
+    properties:
+      password:
+        type: string
+      username:
+        example: teste@gmail.com
+        type: string
+    type: object
   entity.Send_User:
     properties:
       email:

@@ -17,6 +17,10 @@ import (
 	_userHttpDelivery "github.com/pastorilps/propostas_populares/users/delivery/http"
 	_userRepo "github.com/pastorilps/propostas_populares/users/repository"
 	_userUseCase "github.com/pastorilps/propostas_populares/users/usecase"
+
+	_authHttpDelivery "github.com/pastorilps/propostas_populares/authenticate/delivery"
+	_authRepo "github.com/pastorilps/propostas_populares/authenticate/repository"
+	_authUseCase "github.com/pastorilps/propostas_populares/authenticate/usecase"
 )
 
 type Env struct {
@@ -83,6 +87,10 @@ func main() {
 	userRepo := _userRepo.NewUserRepo(dbConn)
 	userUseCase := _userUseCase.NewUserUseCase(userRepo)
 	_userHttpDelivery.NewUserHandler(e, userUseCase)
+
+	authRepo := _authRepo.NewAuthenticateRepo(dbConn)
+	authUseCase := _authUseCase.NewAuthenticateUsecase(authRepo)
+	_authHttpDelivery.NewAuthenticateHandler(e, authUseCase)
 
 	_migrations.Exec(dbConn)
 

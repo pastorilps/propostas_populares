@@ -1,0 +1,28 @@
+package middlewares
+
+import (
+	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/sirupsen/logrus"
+)
+
+var jwtKey = []byte("unicorns")
+
+func GenerateJwt(mp map[string]interface{}) (string, error) {
+	token := jwt.New(jwt.SigningMethodHS256)
+
+	claims := token.Claims.(jwt.MapClaims)
+	claims["authorized"] = true
+	claims["expires"] = time.Now().Add(time.Minute * 30).Unix()
+	for key, val := range mp {
+		claims[key] = val
+	}
+
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		logrus.Error("Something Went Wrong: %s", err.Error())
+		return " ", err
+	}
+	return tokenString, nil
+}

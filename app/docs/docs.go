@@ -186,6 +186,32 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "entity.Auth_Token": {
+            "type": "object",
+            "properties": {
+                "expires": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.Receive_Login_Data": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "teste@gmail.com"
+                }
+            }
+        },
         "entity.Send_User": {
             "type": "object",
             "required": [
