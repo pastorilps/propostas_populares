@@ -26,7 +26,7 @@ func NewAuthenticateHandler(e *echo.Echo, du domain.AuthenticateUsecase) {
 	handler := &AuthenticateHandler{
 		AUsecase: du,
 	}
-	e.POST("/v1/auth/user/signing", handler.GetByUserLogin)
+	e.POST("/v1/auth/users/signing", handler.GetByUserLogin)
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
 
@@ -38,7 +38,7 @@ func NewAuthenticateHandler(e *echo.Echo, du domain.AuthenticateUsecase) {
 // @Param Body body entity.Receive_Login_Data true "The body to login"
 // @Produce json
 // @Success 200 {object} entity.Auth_Token
-// @Router /v1/users/create [post]
+// @Router /v1/auth/users/signing [post]
 func (uh *AuthenticateHandler) GetByUserLogin(c echo.Context) error {
 	var receiveLoginData entity.Receive_Login_Data
 	err := c.Bind(&receiveLoginData)

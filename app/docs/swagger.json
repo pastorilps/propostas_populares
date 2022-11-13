@@ -21,6 +21,40 @@
     "host": "localhost:7500",
     "basePath": "/",
     "paths": {
+        "/v1/auth/users/signing": {
+            "post": {
+                "description": "User Login.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "summary": "User Login.",
+                "parameters": [
+                    {
+                        "description": "The body to login",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Receive_Login_Data"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Auth_Token"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/users": {
             "get": {
                 "description": "Get all users list.",
@@ -78,7 +112,7 @@
                 }
             }
         },
-        "/v1/users/delete/{id}": {
+        "/v1/users/delete/{id}/{token}": {
             "delete": {
                 "description": "Delete User Data.",
                 "consumes": [
@@ -98,6 +132,13 @@
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -107,7 +148,7 @@
                 }
             }
         },
-        "/v1/users/update/{id}": {
+        "/v1/users/update/{id}/{token}": {
             "put": {
                 "description": "Update User Data.",
                 "consumes": [
@@ -125,6 +166,13 @@
                         "type": "integer",
                         "description": "User ID",
                         "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "token",
                         "in": "path",
                         "required": true
                     },
@@ -191,6 +239,9 @@
                 "token": {
                     "type": "string"
                 },
+                "userID": {
+                    "type": "integer"
+                },
                 "username": {
                     "type": "string"
                 }
@@ -200,7 +251,8 @@
             "type": "object",
             "properties": {
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "aB@123456"
                 },
                 "username": {
                     "type": "string",

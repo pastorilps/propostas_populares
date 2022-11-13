@@ -6,12 +6,15 @@ definitions:
         type: string
       token:
         type: string
+      userID:
+        type: integer
       username:
         type: string
     type: object
   entity.Receive_Login_Data:
     properties:
       password:
+        example: aB@123456
         type: string
       username:
         example: teste@gmail.com
@@ -78,6 +81,28 @@ info:
   title: Echo Propostas Populares API
   version: "1.0"
 paths:
+  /v1/auth/users/signing:
+    post:
+      consumes:
+      - application/json
+      description: User Login.
+      parameters:
+      - description: The body to login
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Receive_Login_Data'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Auth_Token'
+      summary: User Login.
+      tags:
+      - Login
   /v1/users:
     get:
       consumes:
@@ -136,7 +161,7 @@ paths:
       summary: Create User.
       tags:
       - Users
-  /v1/users/delete/{id}:
+  /v1/users/delete/{id}/{token}:
     delete:
       consumes:
       - application/json
@@ -147,6 +172,11 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Token
+        in: path
+        name: token
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -155,7 +185,7 @@ paths:
       summary: Delete User.
       tags:
       - Users
-  /v1/users/update/{id}:
+  /v1/users/update/{id}/{token}:
     put:
       consumes:
       - application/json
@@ -166,6 +196,11 @@ paths:
         name: id
         required: true
         type: integer
+      - description: Token
+        in: path
+        name: token
+        required: true
+        type: string
       - description: The body to update a user
         in: body
         name: Body

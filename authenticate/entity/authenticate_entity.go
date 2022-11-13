@@ -1,8 +1,8 @@
 package entity
 
 type Receive_Login_Data struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `json:"username" example:"teste@gmail.com"`
+	Password string `json:"password" example:"aB@123456"`
 }
 
 type Send_User_Data struct {
@@ -13,6 +13,7 @@ type Send_User_Data struct {
 }
 
 type Auth_Token struct {
+	UserID   int16
 	Username string `json:"username"`
 	Token    string `json:"token"`
 	Expires  string `json:"expires"`

@@ -25,6 +25,8 @@ type Receive_User struct {
 	Password   string `json:"password"`
 	Picture    int16  `json:"picture"`
 	Newsletter bool   `json:"newsletter"`
+	Token      string `json:"token"`
+	UserID     int16  `json:"userid"`
 }
 
 type Delete_User struct {

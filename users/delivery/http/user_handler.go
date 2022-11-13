@@ -6,8 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	_ "github.com/pastorilps/propostas_populares/app/docs"
+	"github.com/pastorilps/propostas_populares/middlewares"
 	middleware "github.com/pastorilps/propostas_populares/middlewares"
 	"github.com/pastorilps/propostas_populares/users/domain"
 	"github.com/pastorilps/propostas_populares/users/entity"
@@ -32,10 +34,9 @@ func NewUserHandler(e *echo.Echo, uc domain.UserUseCase) {
 	e.GET("/v1/users", handler.GetAllUsers)
 	e.GET("/v1/users/:id", handler.GetUserById)
 	e.POST("/v1/users/create", handler.CreateUser)
-	e.PUT("/v1/users/update/:id", handler.UpdateUser)
-	e.DELETE("/v1/users/delete/:id", handler.DeleteUser)
+	e.PUT("/v1/users/update/:id/:token", handler.UpdateUser)
+	e.DELETE("/v1/users/delete/:id/:token", handler.DeleteUser)
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
-
 }
 
 // DeleteUser godoc
@@ -44,14 +45,25 @@ func NewUserHandler(e *echo.Echo, uc domain.UserUseCase) {
 // @Tags Users
 // @Accept json
 // @Param id path integer true "User ID"
+// @Param token path string true "Token"
 // @Produce json
 // @Success 200 "Usuário deletado com sucesso!"
-// @Router /v1/users/delete/{id} [delete]
+// @Router /v1/users/delete/{id}/{token} [delete]
 func (u *UserHandler) DeleteUser(c echo.Context) error {
+	var receive entity.Receive_User
 	id, err := strconv.Atoi(c.Param("id"))
 	err = u.AUsecase.DeleteUser(int16(id))
 	if err != nil {
 		return c.JSON(getStatusCode(err), Response{Message: err.Error()})
+	}
+
+	receive.Token = c.Param("token")
+	receive.UserID = middlewares.GetUserIDJWT(receive.Token)
+	if ok, err := isUpdateUser(&receive); !ok {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	if receive.UserID != receive.ID {
+		return c.JSON(http.StatusUnauthorized, "You cannot delete another user's data")
 	}
 
 	return c.JSON(http.StatusOK, "Usuário deletado com sucesso!")
@@ -63,10 +75,11 @@ func (u *UserHandler) DeleteUser(c echo.Context) error {
 // @Tags Users
 // @Accept json
 // @Param id path integer true "User ID"
+// @Param token path string true "Token"
 // @Param Body body entity.Send_User true "The body to update a user"
 // @Produce json
 // @Success 200 {object} entity.Send_User
-// @Router /v1/users/update/{id} [put]
+// @Router /v1/users/update/{id}/{token} [put]
 func (u *UserHandler) UpdateUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -80,6 +93,14 @@ func (u *UserHandler) UpdateUser(c echo.Context) error {
 	}
 
 	receive.ID = int16(id)
+	receive.Token = c.Param("token")
+	receive.UserID = middlewares.GetUserIDJWT(receive.Token)
+	if ok, err := isUpdateUser(&receive); !ok {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	if receive.UserID != receive.ID {
+		return c.JSON(http.StatusUnauthorized, "You cannot edit another user's data")
+	}
 
 	ctx := c.Request().Context()
 	if ctx == nil {
@@ -92,6 +113,18 @@ func (u *UserHandler) UpdateUser(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, list)
+
+	return c.JSON(getStatusCode(err), Response{Message: err.Error()})
+}
+
+func isUpdateUser(vl *entity.Receive_User) (bool, error) {
+	valid := validator.New()
+	err := valid.Struct(vl)
+	if err != nil {
+		return false, err
+	}
+
+	return true, err
 }
 
 // CreateUser godoc

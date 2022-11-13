@@ -25,6 +25,40 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/auth/users/signing": {
+            "post": {
+                "description": "User Login.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "summary": "User Login.",
+                "parameters": [
+                    {
+                        "description": "The body to login",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Receive_Login_Data"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Auth_Token"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/users": {
             "get": {
                 "description": "Get all users list.",
@@ -82,7 +116,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/delete/{id}": {
+        "/v1/users/delete/{id}/{token}": {
             "delete": {
                 "description": "Delete User Data.",
                 "consumes": [
@@ -102,6 +136,13 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -111,7 +152,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/update/{id}": {
+        "/v1/users/update/{id}/{token}": {
             "put": {
                 "description": "Update User Data.",
                 "consumes": [
@@ -129,6 +170,13 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "User ID",
                         "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "token",
                         "in": "path",
                         "required": true
                     },
@@ -195,6 +243,9 @@ const docTemplate = `{
                 "token": {
                     "type": "string"
                 },
+                "userID": {
+                    "type": "integer"
+                },
                 "username": {
                     "type": "string"
                 }
@@ -204,7 +255,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "aB@123456"
                 },
                 "username": {
                     "type": "string",
