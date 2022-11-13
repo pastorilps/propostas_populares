@@ -21,6 +21,9 @@ import (
 	_authHttpDelivery "github.com/pastorilps/propostas_populares/authenticate/delivery"
 	_authRepo "github.com/pastorilps/propostas_populares/authenticate/repository"
 	_authUseCase "github.com/pastorilps/propostas_populares/authenticate/usecase"
+
+	_proposalHttpDelivery "github.com/pastorilps/propostas_populares/propostas/delivery/http"
+	_proposalRepo "github.com/pastorilps/propostas_populares/propostas/repository"
 )
 
 type Env struct {
@@ -91,6 +94,10 @@ func main() {
 	authRepo := _authRepo.NewAuthenticateRepo(dbConn)
 	authUseCase := _authUseCase.NewAuthenticateUsecase(authRepo)
 	_authHttpDelivery.NewAuthenticateHandler(e, authUseCase)
+
+	proposalRepo := _proposalRepo.NewProposalRepo(dbConn)
+	proposalUseCase := _proposalUseCase.newProposalUseCase(proposalRepo)
+	_proposalHttpDelivery.NewProposalHandler(e, proposalUseCase)
 
 	_migrations.Exec(dbConn)
 
