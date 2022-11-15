@@ -10,7 +10,7 @@ type proposalUseCase struct {
 	proposalRepo domain.ProposalRepository
 }
 
-func newProposalUseCase(dp domain.ProposalRepository) domain.ProposalUseCase {
+func NewProposalUseCase(dp domain.ProposalRepository) domain.ProposalUseCase {
 	return &proposalUseCase{
 		proposalRepo: dp,
 	}

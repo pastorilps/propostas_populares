@@ -6,8 +6,8 @@ import (
 	"log"
 )
 
-func CreateAttatchments(dbConn *sql.DB) {
-	execSQL(dbConn, `CREATE TABLE IF NOT EXISTS public.attatchments (
+func CreateAttachments(dbConn *sql.DB) {
+	execSQL(dbConn, `CREATE TABLE IF NOT EXISTS public.attachments (
 		id serial4 NOT NULL,
 		url varchar NOT NULL,
 		user_id int8 NOT NULL
@@ -109,11 +109,11 @@ func execSQL(dbConn *sql.DB, query string, entityName string) {
 
 func Exec(Conn *sql.DB) {
 	CreateUser(Conn)
-	CreateAttatchments(Conn)
+	CreateAttachments(Conn)
 	CreateMedia(Conn)
 	CreateParllament(Conn)
 	CreateProposal(Conn)
-	AlterAttatchments(Conn)
-	AlterMedia(Conn)
-	AlterProposal(Conn)
+	// AlterAttatchments(Conn)
+	// AlterMedia(Conn)
+	// AlterProposal(Conn)
 }

@@ -20,6 +20,54 @@ definitions:
         example: teste@gmail.com
         type: string
     type: object
+  entity.Receive_Proposal_Data:
+    properties:
+      proposalId:
+        type: integer
+      proposalattachments:
+        example: 1
+        type: integer
+      proposaldescription:
+        example: Proposal Description
+        type: string
+      proposalpictures:
+        example: 2
+        type: integer
+      proposalstatus:
+        example: true
+        type: boolean
+      proposaltitle:
+        example: Proposal Title
+        type: string
+      proposaluserid:
+        example: 2
+        type: integer
+      token:
+        type: string
+      userid:
+        type: integer
+    type: object
+  entity.Send_Proposal_Data:
+    properties:
+      proposalattachments:
+        example: 1
+        type: integer
+      proposaldescription:
+        example: Proposal Description
+        type: string
+      proposalpictures:
+        example: 2
+        type: integer
+      proposalstatus:
+        example: true
+        type: boolean
+      proposaltitle:
+        example: Proposal Title
+        type: string
+      proposaluserid:
+        example: 2
+        type: integer
+    type: object
   entity.Send_User:
     properties:
       email:
@@ -103,6 +151,33 @@ paths:
       summary: User Login.
       tags:
       - Login
+  /v1/proposal/create/{token}:
+    post:
+      consumes:
+      - application/json
+      description: Create UsProposaler.
+      parameters:
+      - description: Token
+        in: path
+        name: token
+        required: true
+        type: string
+      - description: The body to create a proposal
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Send_Proposal_Data'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Receive_Proposal_Data'
+      summary: Create Proposal.
+      tags:
+      - Proposal
   /v1/users:
     get:
       consumes:
@@ -161,7 +236,7 @@ paths:
       summary: Create User.
       tags:
       - Users
-  /v1/users/delete/{id}/{token}:
+  /v1/users/delete/{id}:
     delete:
       consumes:
       - application/json
@@ -172,9 +247,10 @@ paths:
         name: id
         required: true
         type: integer
-      - description: Token
-        in: path
-        name: token
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
         required: true
         type: string
       produces:

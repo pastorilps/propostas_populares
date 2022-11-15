@@ -35,7 +35,7 @@ func NewUserHandler(e *echo.Echo, uc domain.UserUseCase) {
 	e.GET("/v1/users/:id", handler.GetUserById)
 	e.POST("/v1/users/create", handler.CreateUser)
 	e.PUT("/v1/users/update/:id/:token", handler.UpdateUser)
-	e.DELETE("/v1/users/delete/:id/:token", handler.DeleteUser)
+	e.DELETE("/v1/users/delete/:id", handler.DeleteUser)
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
 
@@ -45,24 +45,22 @@ func NewUserHandler(e *echo.Echo, uc domain.UserUseCase) {
 // @Tags Users
 // @Accept json
 // @Param id path integer true "User ID"
-// @Param token path string true "Token"
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
 // @Produce json
 // @Success 200 "Usuário deletado com sucesso!"
-// @Router /v1/users/delete/{id}/{token} [delete]
+// @Router /v1/users/delete/{id} [delete]
 func (u *UserHandler) DeleteUser(c echo.Context) error {
-	var receive entity.Receive_User
+	var uid int16
+	uid = middlewares.GetToken(c)
 	id, err := strconv.Atoi(c.Param("id"))
 	err = u.AUsecase.DeleteUser(int16(id))
 	if err != nil {
 		return c.JSON(getStatusCode(err), Response{Message: err.Error()})
 	}
 
-	receive.Token = c.Param("token")
-	receive.UserID = middlewares.GetUserIDJWT(receive.Token)
-	if ok, err := isUpdateUser(&receive); !ok {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-	if receive.UserID != receive.ID {
+	deleteId := int16(id)
+
+	if uid != deleteId {
 		return c.JSON(http.StatusUnauthorized, "You cannot delete another user's data")
 	}
 

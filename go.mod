@@ -7,7 +7,6 @@ require (
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/labstack/echo/v4 v4.9.1
 	github.com/lib/pq v1.10.7
-	github.com/nats-io/jwt/v2 v2.3.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/subosito/gotenv v1.4.1
 	github.com/swaggo/echo-swagger v1.3.5
@@ -29,7 +28,6 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
-	github.com/nats-io/nkeys v0.3.0 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

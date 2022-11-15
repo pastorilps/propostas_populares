@@ -59,6 +59,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/proposal/create/{token}": {
+            "post": {
+                "description": "Create UsProposaler.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proposal"
+                ],
+                "summary": "Create Proposal.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "The body to create a proposal",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Send_Proposal_Data"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Receive_Proposal_Data"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/users": {
             "get": {
                 "description": "Get all users list.",
@@ -116,7 +157,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/delete/{id}/{token}": {
+        "/v1/users/delete/{id}": {
             "delete": {
                 "description": "Delete User Data.",
                 "consumes": [
@@ -139,9 +180,10 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Token",
-                        "name": "token",
-                        "in": "path",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -261,6 +303,73 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "example": "teste@gmail.com"
+                }
+            }
+        },
+        "entity.Receive_Proposal_Data": {
+            "type": "object",
+            "properties": {
+                "proposalId": {
+                    "type": "integer"
+                },
+                "proposalattachments": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "proposaldescription": {
+                    "type": "string",
+                    "example": "Proposal Description"
+                },
+                "proposalpictures": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "proposalstatus": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "proposaltitle": {
+                    "type": "string",
+                    "example": "Proposal Title"
+                },
+                "proposaluserid": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "token": {
+                    "type": "string"
+                },
+                "userid": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entity.Send_Proposal_Data": {
+            "type": "object",
+            "properties": {
+                "proposalattachments": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "proposaldescription": {
+                    "type": "string",
+                    "example": "Proposal Description"
+                },
+                "proposalpictures": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "proposalstatus": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "proposaltitle": {
+                    "type": "string",
+                    "example": "Proposal Title"
+                },
+                "proposaluserid": {
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },

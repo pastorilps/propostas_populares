@@ -4,6 +4,7 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 )
 
@@ -41,4 +42,11 @@ func GetUserIDJWT(tokenstr string) int16 {
 	})
 
 	return Claims.UserID
+}
+
+func GetToken(c echo.Context) int16 {
+	header := c.Request().Header.Get("Authorization")
+	token := header[len("Bearer "):]
+	UserID := GetUserIDJWT(token)
+	return UserID
 }
