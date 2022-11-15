@@ -47,6 +47,6 @@ func GetUserIDJWT(tokenstr string) int16 {
 func GetToken(c echo.Context) int16 {
 	header := c.Request().Header.Get("Authorization")
 	token := header[len("Bearer "):]
-	UserID := GetUserIDJWT(token)
-	return UserID
+	userToken := GetUserIDJWT(token)
+	return userToken
 }
