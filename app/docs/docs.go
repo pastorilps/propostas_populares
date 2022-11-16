@@ -59,7 +59,40 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/proposal/create/{token}": {
+        "/v1/proposal": {
+            "get": {
+                "description": "Get all users list.",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Proposal"
+                ],
+                "summary": "Show all users.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Proposal_Data"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/proposal/create": {
             "post": {
                 "description": "Create UsProposaler.",
                 "consumes": [
@@ -75,9 +108,10 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Token",
-                        "name": "token",
-                        "in": "path",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     },
                     {
@@ -194,7 +228,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/update/{id}/{token}": {
+        "/v1/users/update/{id}": {
             "put": {
                 "description": "Update User Data.",
                 "consumes": [
@@ -217,9 +251,10 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Token",
-                        "name": "token",
-                        "in": "path",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
                         "required": true
                     },
                     {
@@ -290,6 +325,39 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "entity.Proposal_Data": {
+            "type": "object",
+            "properties": {
+                "proposalId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "proposalattachments": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "proposaldescription": {
+                    "type": "string",
+                    "example": "Proposal Description"
+                },
+                "proposalpictures": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "proposalstatus": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "proposaltitle": {
+                    "type": "string",
+                    "example": "Proposal Title"
+                },
+                "proposaluserid": {
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },

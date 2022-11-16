@@ -16,6 +16,16 @@ func NewProposalUseCase(dp domain.ProposalRepository) domain.ProposalUseCase {
 	}
 }
 
+func (pu *proposalUseCase) GetAllProposal() ([]*entity.Proposal_Data, error) {
+	list, err := pu.proposalRepo.GetAllProposal()
+	if err != nil {
+		logrus.Error(err)
+		return nil, err
+	}
+
+	return list, nil
+}
+
 func (pu *proposalUseCase) CreateProposal(ep *entity.Send_Proposal_Data) (pr *entity.Receive_Proposal_Data, err error) {
 	res, err := pu.proposalRepo.CreateProposal(ep)
 	if err != nil {

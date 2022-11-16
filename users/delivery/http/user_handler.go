@@ -34,7 +34,7 @@ func NewUserHandler(e *echo.Echo, uc domain.UserUseCase) {
 	e.GET("/v1/users", handler.GetAllUsers)
 	e.GET("/v1/users/:id", handler.GetUserById)
 	e.POST("/v1/users/create", handler.CreateUser)
-	e.PUT("/v1/users/update/:id/:token", handler.UpdateUser)
+	e.PUT("/v1/users/update/:id", handler.UpdateUser)
 	e.DELETE("/v1/users/delete/:id", handler.DeleteUser)
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }
@@ -50,8 +50,8 @@ func NewUserHandler(e *echo.Echo, uc domain.UserUseCase) {
 // @Success 200 "Usuário deletado com sucesso!"
 // @Router /v1/users/delete/{id} [delete]
 func (u *UserHandler) DeleteUser(c echo.Context) error {
-	var uid int16
-	uid = middlewares.GetToken(c)
+	token := middlewares.GetToken(c)
+	uid := middlewares.GetUserIDJWT(token)
 	id, err := strconv.Atoi(c.Param("id"))
 	err = u.AUsecase.DeleteUser(int16(id))
 	if err != nil {
@@ -73,11 +73,11 @@ func (u *UserHandler) DeleteUser(c echo.Context) error {
 // @Tags Users
 // @Accept json
 // @Param id path integer true "User ID"
-// @Param token path string true "Token"
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
 // @Param Body body entity.Send_User true "The body to update a user"
 // @Produce json
 // @Success 200 {object} entity.Send_User
-// @Router /v1/users/update/{id}/{token} [put]
+// @Router /v1/users/update/{id} [put]
 func (u *UserHandler) UpdateUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -91,7 +91,7 @@ func (u *UserHandler) UpdateUser(c echo.Context) error {
 	}
 
 	receive.ID = int16(id)
-	receive.Token = c.Param("token")
+	receive.Token = middlewares.GetToken(c)
 	receive.UserID = middlewares.GetUserIDJWT(receive.Token)
 	if ok, err := isUpdateUser(&receive); !ok {
 		return c.JSON(http.StatusBadRequest, err.Error())

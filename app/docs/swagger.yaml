@@ -11,6 +11,30 @@ definitions:
       username:
         type: string
     type: object
+  entity.Proposal_Data:
+    properties:
+      proposalId:
+        example: 1
+        type: integer
+      proposalattachments:
+        example: 1
+        type: integer
+      proposaldescription:
+        example: Proposal Description
+        type: string
+      proposalpictures:
+        example: 2
+        type: integer
+      proposalstatus:
+        example: true
+        type: boolean
+      proposaltitle:
+        example: Proposal Title
+        type: string
+      proposaluserid:
+        example: 2
+        type: integer
+    type: object
   entity.Receive_Login_Data:
     properties:
       password:
@@ -151,15 +175,38 @@ paths:
       summary: User Login.
       tags:
       - Login
-  /v1/proposal/create/{token}:
+  /v1/proposal:
+    get:
+      consumes:
+      - '*/*'
+      description: Get all users list.
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Proposal_Data'
+      summary: Show all users.
+      tags:
+      - Proposal
+  /v1/proposal/create:
     post:
       consumes:
       - application/json
       description: Create UsProposaler.
       parameters:
-      - description: Token
-        in: path
-        name: token
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
         required: true
         type: string
       - description: The body to create a proposal
@@ -261,7 +308,7 @@ paths:
       summary: Delete User.
       tags:
       - Users
-  /v1/users/update/{id}/{token}:
+  /v1/users/update/{id}:
     put:
       consumes:
       - application/json
@@ -272,9 +319,10 @@ paths:
         name: id
         required: true
         type: integer
-      - description: Token
-        in: path
-        name: token
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
         required: true
         type: string
       - description: The body to update a user
